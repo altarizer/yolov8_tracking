@@ -1,3 +1,13 @@
+
+# ++ 20230214
+import time
+from altariz.multicast.sender import sender as Sender  
+sender = Sender()
+# ++ 20230214 end 
+
+
+
+
 import argparse
 import cv2
 import os
@@ -221,6 +231,11 @@ def run(
                 with dt[3]:
                     outputs[i] = tracker_list[i].update(det.cpu(), im0)
                 
+                # ++ 20230214
+                if len(outputs[i]) >0:
+                    sender.send(f"SCK|{time.time()}|{outputs[i]}") # +_ 20230214
+                # ++ 20230214 end
+
                 # draw boxes for visualization
                 if len(outputs[i]) > 0:
                     
