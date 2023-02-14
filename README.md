@@ -1,3 +1,13 @@
+
+
+1. added altariz-python package (if need to use manual) 
+$ git clone https://github.com/altarizer/altariz-python 
+$ mv altariz-python altariz
+
+2. trackd.py added 
+
+
+
 # Real-time multi-object tracking and segmentation using Yolov8
 
 

@@ -1,3 +1,7 @@
 [submodule "yolov8"]
 	path = yolov8
 	url = https://github.com/ultralytics/ultralytics
+
+[submodule "altariz"]
+	path = altariz
+	url = https://github.com/altarizer/altariz-python
