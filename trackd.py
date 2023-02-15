@@ -233,9 +233,9 @@ def run(
                 
                 # ++ 20230214
                 if tracking_method == "ocsort":
-                    sender.send(f"SCK|{tracking_method}|{time.time()}|{outputs[i].tolist()}")
+                    sender.send(f"INF|{tracking_method}|{time.time()}|{outputs[i].tolist()}")
                 else: 
-                    sender.send(f"SCK|{tracking_method}|{time.time()}|{outputs[i]}") 
+                    sender.send(f"INF|{tracking_method}|{time.time()}|{outputs[i]}") 
                 # ++ 20230214 end
 
                 # draw boxes for visualization
