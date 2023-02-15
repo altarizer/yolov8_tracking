@@ -232,8 +232,10 @@ def run(
                     outputs[i] = tracker_list[i].update(det.cpu(), im0)
                 
                 # ++ 20230214
-                if len(outputs[i]) >0:
-                    sender.send(f"SCK|{time.time()}|{outputs[i]}") # +_ 20230214
+                if tracking_method == "ocsort":
+                    sender.send(f"SCK|{tracking_method}|{time.time()}|{outputs[i].tolist()}")
+                else: 
+                    sender.send(f"SCK|{tracking_method}|{time.time()}|{outputs[i]}") 
                 # ++ 20230214 end
 
                 # draw boxes for visualization
