@@ -3,7 +3,10 @@
 import time
 from altariz.multicast.sender import sender as Sender  
 sender = Sender()
-# ++ 20230214 end 
+# ++ 20230214 end    
+# ++ 20230411
+sender.send(f"OP|start|{time.time()}") 
+# ++ 20230411 end
 
 
 
@@ -327,6 +330,11 @@ def run(
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(yolo_weights)  # update model (to fix SourceChangeWarning)
+        
+    # Add named pipe for fisnished notifying to other process
+    # ++ 20230411
+    sender.send(f"OP|end|{time.time()}") 
+    # ++ 20230411 end
 
 
 def parse_opt():
