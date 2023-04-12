@@ -333,7 +333,7 @@ def run(
         
     # Add named pipe for fisnished notifying to other process
     # ++ 20230411
-    sender.send(f"OP|end|{time.time()}") 
+    sender.send(f"OP|end|{time.time()} {DEF_START_TIME}") 
     # ++ 20230411 end
 
 
