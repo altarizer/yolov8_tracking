@@ -5,7 +5,9 @@ from altariz.multicast.sender import sender as Sender
 sender = Sender()
 # ++ 20230214 end    
 # ++ 20230411
+DEF_START_TIME = time.time()
 sender.send(f"OP|start|{time.time()}") 
+time.sleep(2)
 # ++ 20230411 end
 
 
