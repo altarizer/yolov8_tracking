@@ -1,4 +1,37 @@
 
+# Setup 
+PS> New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+-Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+
+`$ git clone --recurse-submodules https://github.com/altarizer/yolov8_tracking.git`  
+`$ conda create -n byte python=3.8`  
+`$ conda activate byte`   
+`$ pip install -r yolov8_tracking/requirements.txt`  
+`$ python -m pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio===0.9.0 -f https://download.pytorch.org/whl/torch_stable.html  --no-cache-dir`  
+or   
+`$ python -m pip install torch==1.9.0+cu101 torchvision==0.10.0+cu101 torchaudio===0.9.0 -f https://download.pytorch.org/whl/torch_stable.html  --no-cache-dir`  
+
+`$ pip install -r yolov8_tracking/requirements.txt`  
+
+`$ pip install ray[default]`  
+`$ pip install shapely`  
+
+
+# Exceute 
+## Step 1 - inference (GPL-3.0)
+  > e.g. 1  
+  `$ python yolov8_tracking/trackd.py --tracking-method bytetrack --source movie.mp4 --show-vid --classes 0`  
+  > e.g. 2  
+  `$ python yolov8_tracking/trackd.py --tracking-method bytetrack --source movie.mp4 --show-vid --classes 0 --save-vid`
+## Step 2 - Other Logic (Base on Your License)
+  > TODO 
+    
+# Call Python Virtual Env in Windows Cmd
+
+%windir%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass -NoExit -Command "& 'C:\Users\{{username}}\anaconda3\shell\condabin\conda-hook.ps1' ; conda activate 'C:\Users\{{username}}\anaconda3' ; conda activate {{env-name}} ; {{your batch file or python file}}
+
+
+
 
 1. added altariz-python package (if need to use manual) 
 $ git clone https://github.com/altarizer/altariz-python 
