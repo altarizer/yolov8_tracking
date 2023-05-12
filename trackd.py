@@ -10,6 +10,9 @@ sender.send(f"OP|start|{time.time()}")
 time.sleep(2)
 # ++ 20230411 end
 
+# ++ 20230512
+DEF_WIN_NAME = "SHOW-VID"
+# ++ 20230512 end
 
 
 
@@ -285,8 +288,17 @@ def run(
                                 q = output[7]
                                 tracker_list[i].trajectory(im0, q, color=color)
                             if save_crop:
-                                txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
-                                save_one_box(np.array(bbox, dtype=np.int16), imc, file=save_dir / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
+                                # -- 20230512
+                                # origin 
+                                # txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
+                                # save_one_box(np.array(bbox, dtype=np.int16), imc, file=save_dir / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
+                                # -- 20230512 end 
+								
+                                # ++ 20230512
+								# TODO send to tcp recv
+								#
+                                print (f"{label}\t{id}\t{bbox}")  
+                                # ++ 20230512 end
                             
             else:
                 pass
@@ -299,7 +311,15 @@ def run(
                     windows.append(p)
                     cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                cv2.imshow(str(p), im0)
+                # ++ 20230512
+                else:
+                    cv2.namedWindow(DEF_WIN_NAME, cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
+                              
+                cv2.imshow(DEF_WIN_NAME, im0)  
+                # ++ 20230512 end
+                
+                # cv2.imshow(str(p), im0) # -- 20230512     
+
                 if cv2.waitKey(1) == ord('q'):  # 1 millisecond
                     exit()
 
