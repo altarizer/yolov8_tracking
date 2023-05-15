@@ -15,6 +15,16 @@ DEF_WIN_NAME = "SHOW-VID"
 # ++ 20230512 end
 
 
+# ++ 20230515
+time.sleep(10) ## wait 10 secs
+
+from PIL import Image
+from altariz.unicast.sender import sender as TcpSender  
+tcpSender = TcpSender()
+
+# ++ 20230515
+
+
 
 import argparse
 import cv2
@@ -96,6 +106,8 @@ def run(
         vid_stride=1,  # video frame-rate stride
         retina_masks=False,
 ):
+
+    global tcpSender # ++ 20230515
 
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -297,7 +309,39 @@ def run(
                                 # ++ 20230512
 								# TODO send to tcp recv
 								#
-                                print (f"{label}\t{id}\t{bbox}")  
+                                if bbox != None:
+                                    cimg=Image.fromarray(imc)
+                                    numpy_image=np.array(cimg) 
+                                    #numpy_image = numpy_image[..., id]
+                                    opencv_image=cv2.cvtColor(numpy_image.astype(np.uint8), cv2.COLOR_BGR2BGRA)                                    
+                                    h, w, c = opencv_image.shape
+                                    print(w, h, c)
+                                    
+                                    print(bbox)
+                                    r = [ int(x) for x in bbox ]   
+                                    ptStart = r[:2]
+                                    PtEnd = r[2:]
+
+                                    DEF_MARGIN = 20
+                                    ptStart = [x-DEF_MARGIN for x in ptStart]
+                                    PtEnd = [x+DEF_MARGIN for x in PtEnd]
+                                    ptStart = [ 0 if x <0 else x for x in ptStart]
+                                    PtEnd = [ 0 if x <0 else x for x in PtEnd]
+                                    if ptStart[1] > h:
+                                        ptStart[1] = h
+                                    if ptStart[0] > w:
+                                        ptStart[0] = w
+                                    if PtEnd[1] > h:
+                                        PtEnd[1] = h
+                                    if PtEnd[0] > w:
+                                        PtEnd[0] = w
+
+                                    r = ptStart + PtEnd
+
+                                    cropped_img = opencv_image[r[1]:r[1] + (r[3] - r[1]), r[0]: r[0] + (r[2] - r[0])]
+                                    
+                                    print (f"{label}\t{id}\t{bbox}")  
+                                    tcpSender.send(cropped_img, id)
                                 # ++ 20230512 end
                             
             else:
@@ -352,6 +396,17 @@ def run(
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(yolo_weights)  # update model (to fix SourceChangeWarning)
+
+    # ++ 20230515    
+    _f = np.zeros([100,100,3],dtype=np.uint8)
+    _f.fill(0) # or f[:] = 0
+    tcpSender.send(_f, 0)
+    tcpSender.close()    
+    time.sleep(20)
+    tcpSender = TcpSender() 
+    #tcpSender.send(_f, 0)
+    tcpSender.close()    
+    # ++ 20230515 end   
         
     # Add named pipe for fisnished notifying to other process
     # ++ 20230411
