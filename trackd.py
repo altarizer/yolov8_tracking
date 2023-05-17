@@ -1,8 +1,13 @@
 
 # ++ 20230214
 import time
+DEF_UDP_PORT = ""
+with open("yolov8_tracking/udp_port.txt", "r") as f:
+  DEF_UDP_PORT= f.readline().replace("\n", "")
+print(f"DEF_UDP_PORT={DEF_UDP_PORT}")
+
 from altariz.multicast.sender import sender as Sender  
-sender = Sender()
+sender = Sender(mc_port=int(DEF_UDP_PORT))
 # ++ 20230214 end    
 # ++ 20230411
 DEF_START_TIME = time.time()
