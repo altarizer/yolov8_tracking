@@ -320,9 +320,9 @@ def run(
                                     #numpy_image = numpy_image[..., id]
                                     opencv_image=cv2.cvtColor(numpy_image.astype(np.uint8), cv2.COLOR_BGR2BGRA)                                    
                                     h, w, c = opencv_image.shape
-                                    print(w, h, c)
+                                    #print(w, h, c)
                                     
-                                    print(bbox)
+                                    #print(bbox)
                                     r = [ int(x) for x in bbox ]   
                                     ptStart = r[:2]
                                     PtEnd = r[2:]
@@ -345,7 +345,7 @@ def run(
 
                                     cropped_img = opencv_image[r[1]:r[1] + (r[3] - r[1]), r[0]: r[0] + (r[2] - r[0])]
                                     
-                                    print (f"{label}\t{id}\t{bbox}")  
+                                    #print (f"{label}\t{id}\t{bbox}")  
                                     tcpSender.send(cropped_img, id)
                                 # ++ 20230512 end
                             
@@ -391,7 +391,10 @@ def run(
             prev_frames[i] = curr_frames[i]
             
         # Print total time (preprocessing + inference + NMS + tracking)
-        LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{sum([dt.dt for dt in dt if hasattr(dt, 'dt')]) * 1E3:.1f}ms")
+        if "(2/" in s:
+            from datetime import datetime 
+            LOGGER.info(f"{datetime.today().strftime('%Y-%m-%d %H:%M:%S')}")
+            LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{sum([dt.dt for dt in dt if hasattr(dt, 'dt')]) * 1E3:.1f}ms")
 
     # Print results
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
